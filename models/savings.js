@@ -5,13 +5,33 @@ var dbConnection = require('./database');
  * User Schema
  */
 
-var communitySchema = new mongoose.Schema({  
-  userName: {
+var memberSchema = new mongoose.Schema({  
+  fbID: {
     type: String,
     required: true
   },
-  password: {
+  fName: {
     type: String,
+    required: true
+  },
+  lName: {
+    type: String,
+    required: true
+  },
+  telephone: {
+    type: String,
+    required: true
+  },
+  accountBalance: {
+    type: Number,
+    required: true
+  },
+  loanLimit: {
+    type: Number,
+    required: true
+  },
+  loanBalance: {
+    type: Number,
     required: true
   },
   createdAt: {
@@ -24,10 +44,10 @@ var communitySchema = new mongoose.Schema({
 /**
  * Methods
  */
-communitySchema.method({
+memberSchema.method({
 });
 
-communitySchema.statics = {
+memberSchema.statics = {
 
   get(id){
     return this.findById(id)
@@ -50,4 +70,4 @@ communitySchema.statics = {
     }
 }
 
-module.exports = mongoose.model('Community', communitySchema);
+module.exports = mongoose.model('Member', memberSchema);

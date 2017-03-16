@@ -43,7 +43,27 @@ function processRequest(req, res, next) {
 }
 
 function registerUser(req, res, next){
+  const member = new saveModel({
+    fbID: req.body.fbID,
+    fName: req.body.fName,
+    lName:req.body.lName,
+    telephone: req.body.telephone,
+    accountBalance: 0,
+    loanLimit: 0,
+    loanBalance: 0
+  });
 
+  member.save()
+    .then(savedUser => json(savedUser))
+    .catch(e => next(e));
+
+  var messageData = {
+    "messages": [
+      {"text": "Your account has been successfully created. Your Account ID is "+savedUser.id}
+    ]
+  };
+  console.log(messageData)
+  return messageData;
 }
 
 function makeDeposit(req, res, next){
