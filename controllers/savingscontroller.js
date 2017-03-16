@@ -59,10 +59,12 @@ function loanCheckAmout(req, res, next){
 }
 
 function makeLoanRequest(req, res, next){
-  var msg = 'We are Processing Your loan request';
-  return msg;
+  var messageData = {
+    "messages": [
+      {"text": "Welcome to our store!"}
+    ]
+  };
+  return messageData;
 }
-
-
 
 module.exports = {verifyWebHook, processRequest};
