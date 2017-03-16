@@ -29,7 +29,7 @@ function processRequest(req, res, next) {
   var textResponse;
 
   if(fxn_call ==='register'){
-      textResponse = registerUser();
+      textResponse = registerUser(data);
   } else  if (fxn_call ==='deposit') {
       textResponse = makeDeposit();
   } else  if (fxn_call ==='checkbal'){
@@ -42,7 +42,7 @@ function processRequest(req, res, next) {
   res.json(textResponse);
 }
 
-function registerUser(req, res, next){
+function registerUser(data){
   const member = new saveModel({
     fbID: data.fb_id,
     fName: data.fb_first_name,
