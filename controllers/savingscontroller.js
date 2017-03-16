@@ -160,7 +160,7 @@ function makeDeposit(data, callback){
         .then(function(transaction){
             var messageData = {
                 "messages": [
-                  {"text": "Your transaction was successfully completed. Your transaction id is "+transaction.id+" and your account balance is "+newbalance}
+                  {"text": "Your transaction was successfully completed."}
                 ]
               };
         })
