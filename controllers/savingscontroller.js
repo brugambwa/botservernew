@@ -164,11 +164,6 @@ function makeDeposit(data, callback){
               };
         })
         .catch(e => console.log(e));
-        var messageData = {
-          "messages": [
-            {"text": "We are unable to complete your transaction at this time. Please try again later."}
-          ]
-        };
       }
       callback(messageData);
     }
