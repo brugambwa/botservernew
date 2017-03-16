@@ -52,13 +52,13 @@ function processRequest(req, res, next) {
 
 function loanLimitAmoutCheck(data, callback){
   var uID = data.fb_id;
-  saveModel.find({fbID: uID}, function(err, member) {
+  saveModel.findOne({fbID: uID}, function(err, member) {
     if (err) {
       console.log('Could Not Find Any Records.');
     } else {
       var messageData = {
           "messages": [
-            {"text": "You are currently allowed up to "+member[0].loanLimit+" on InstaLoan."}
+            {"text": "You are currently allowed up to "+member.loanLimit+" on InstaLoan."}
           ]
         };
         console.log(messageData);
@@ -82,7 +82,7 @@ function checkBalance(data, callback){
       } else {
         var messageData = {
           "messages": [
-            {"text": "Your account balance is  "+member[0].accountBalance+" And your outstanding loan balance is "+member[0].loanBalance}
+            {"text": "Your account balance is  "+member.accountBalance+" And your outstanding loan balance is "+member.loanBalance}
           ]
         };
       }
