@@ -55,7 +55,7 @@ function registerUser(data){
 
   member.save()
     .then(savedUser => json(savedUser))
-    .catch(e => next(e));
+    .catch(e => console.log(e));
 
   var messageData = {
     "messages": [
