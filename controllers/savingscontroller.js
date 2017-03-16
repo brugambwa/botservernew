@@ -79,7 +79,7 @@ function makeDeposit(data, callback){
 }
 
 function checkBalance(data, callback){
-  var fbID = data.fb_id;
+  var uID = data.fb_id;
   saveModel.find({fbID: uID}, function(err, member) {
     if (err) {
       console.log('Could Not Find Any Records.');
