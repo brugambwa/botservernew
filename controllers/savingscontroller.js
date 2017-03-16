@@ -44,10 +44,10 @@ function processRequest(req, res, next) {
 
 function registerUser(req, res, next){
   const member = new saveModel({
-    fbID: req.body.fbID,
-    fName: req.body.fName,
-    lName:req.body.lName,
-    telephone: req.body.telephone,
+    fbID: data.fb_id,
+    fName: data.fb_first_name,
+    lName: data.fb_last_name,
+    telephone: data.user_number,
     accountBalance: 0,
     loanLimit: 0,
     loanBalance: 0
