@@ -1,5 +1,5 @@
 var express = require('express');
-var saveCtrl = require('../controllers/savingsController');
+var saveCtrl = require('../controllers/savingscontroller');
 
 var saverouter = express.Router(); // eslint-disable-line new-cap
 
