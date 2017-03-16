@@ -144,6 +144,7 @@ function makeDeposit(data, callback){
           ]
         };
       } else {
+        console.log(member);
         //Process Deposit.
         var newbalance = member.accountBalance + data.deposit_amount;
         var transaction = new transModel({
@@ -165,6 +166,7 @@ function makeDeposit(data, callback){
         })
         .catch(e => console.log(e));
       }
+      console.log('Execution Completed');
       console.log(messageData);
       callback(messageData);
     }
