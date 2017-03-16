@@ -56,7 +56,7 @@ function registerUser(data, callback){
   });
 
   member.save()
-    .then(savedUser, function(savedUser){
+    .then(function(savedUser){
         var messageData = {
             "messages": [
               {"text": "Your account has been successfully created. Your Account ID is "+savedUser.id}
