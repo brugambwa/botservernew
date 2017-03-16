@@ -155,9 +155,10 @@ function makeDeposit(data, callback){
           accountPreBal: member.accountBalance,
           accountPostBal: newbalance
         });
-
+        console.log("------------------");
         transaction.save()
         .then(function(transaction){
+          console.log(transaction);
             var messageData = {
                 "messages": [
                   {"text": "Your transaction was successfully completed."}
