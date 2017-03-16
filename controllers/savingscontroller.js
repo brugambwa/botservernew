@@ -167,10 +167,10 @@ function makeDeposit(data, callback){
         })
         .catch(e => console.log(e));
       }
-      console.log('Execution Completed');
-      console.log(messageData);
-      callback(messageData);
     }
+    console.log('Execution Completed');
+    console.log(messageData);
+    callback(messageData);
   });
 }
 
