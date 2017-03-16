@@ -29,7 +29,9 @@ function processRequest(req, res, next) {
   var textResponse;
 
   if(fxn_call ==='register'){
-      textResponse = registerUser(data);
+      registerUser(data, function(saveduser){
+        res.json(saveduser);
+      });
   } else  if (fxn_call ==='deposit') {
       textResponse = makeDeposit();
   } else  if (fxn_call ==='checkbal'){
@@ -39,10 +41,10 @@ function processRequest(req, res, next) {
   } else {
       textResponse = makeLoanRequest();
   }
-  res.json(textResponse);
+  //res.json(textResponse);
 }
 
-function registerUser(data){
+function registerUser(data, callback){
   const member = new saveModel({
     fbID: data.fb_id,
     fName: data.fb_first_name,
@@ -54,16 +56,16 @@ function registerUser(data){
   });
 
   member.save()
-    .then(savedUser => savedUser)
+    .then(savedUser, function(savedUser){
+        var messageData = {
+            "messages": [
+              {"text": "Your account has been successfully created. Your Account ID is "+savedUser.id}
+            ]
+          };
+          console.log(messageData)
+          callback(messageData);
+    })
     .catch(e => console.log(e));
-
-  var messageData = {
-    "messages": [
-      {"text": "Your account has been successfully created. Your Account ID is "+savedUser.id}
-    ]
-  };
-  console.log(messageData)
-  return messageData;
 }
 
 function makeDeposit(req, res, next){
