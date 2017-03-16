@@ -165,6 +165,7 @@ function makeDeposit(data, callback){
         })
         .catch(e => console.log(e));
       }
+      console.log(messageData);
       callback(messageData);
     }
   });
