@@ -1,4 +1,6 @@
 var saveModel = require('../models/savings');
+var transModel = require('../models/transactions');
+
 
 function verifyWebHook(req, res, next){
   console.log("Verify Token sent");
@@ -82,7 +84,7 @@ function checkBalance(data, callback){
       } else {
         var messageData = {
           "messages": [
-            {"text": "Your account balance is  "+member.accountBalance+" And your outstanding loan balance is "+member.loanBalance}
+            {"text": "Your account balance is  "+member.accountBalance+" and your outstanding loan balance is "+member.loanBalance}
           ]
         };
       }
@@ -130,7 +132,47 @@ function registerUser(data, callback){
 }
 
 function makeDeposit(data, callback){
+  var uID = data.fb_id;
+  saveModel.findOne({fbID: uID}, function(err, member) {
+    if (err) {
+      console.log('Could Not Find Any Records.');
+    } else {
+      if(!member){
+        var messageData = {
+          "messages": [
+            {"text": "No account record found. Click Join to start saving!"}
+          ]
+        };
+      } else {
+        //Process Deposit.
+        var newbalance = member.accountBalance + data.deposit_amount;
+        var transaction = new transModel({
+          fbID: data.fb_id,
+          telephone: data.user_number,
+          amount: data.deposit_amount,
+          transactionType: 'deposit',
+          accountPreBal: member.accountBalance,
+          accountPostBal: newbalance
+        });
 
+        transaction.save()
+        .then(function(transaction){
+            var messageData = {
+                "messages": [
+                  {"text": "Your transaction was successfully completed. Your transaction id is "+transaction.id+" and your account balance is "+newbalance}
+                ]
+              };
+        })
+        .catch(e => console.log(e));
+        var messageData = {
+          "messages": [
+            {"text": "We are unable to complete your transaction at this time. Please try again later."}
+          ]
+        };
+      }
+      callback(messageData);
+    }
+  });
 }
 
 
