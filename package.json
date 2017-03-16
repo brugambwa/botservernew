@@ -1,0 +1,29 @@
+{
+  "name": "backendnew",
+  "version": "1.0.0",
+  "description": "SocialSaver Bot Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brugambwa/botservernew.git"
+  },
+  "author": "Bobson Rugambwa <brugambwa@andrew.cmu.edu>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brugambwa/botservernew/issues"
+  },
+  "homepage": "https://github.com/brugambwa/botservernew#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "method-override": "^2.3.7",
+    "mongoose": "^4.9.0",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
