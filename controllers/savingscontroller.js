@@ -26,26 +26,32 @@ function verifyWebHook(req, res, next){
 function processRequest(req, res, next) {
   var data = req.body;
   var fxn_call = data.fxn_call;
-  var textResponse;
 
   if(fxn_call ==='register'){
       registerUser(data, function(saveduser){
         res.json(saveduser);
       });
   } else  if (fxn_call ==='deposit') {
-      textResponse = makeDeposit();
+      makeDeposit(data, function(depositresp){
+        res.json(depositresp);
+      });
   } else  if (fxn_call ==='checkbal'){
-      textResponse = this.checkBalance();
+      checkBalance(data, function(balanceinfo){
+        res.json(balanceinfo);
+      });
   } else if(fxn_call ==='checklimit'){
-      textResponse = loanCheckAmout();
+      loanCheckAmout(data, function(loanlimitinfo){
+        res.json(loanlimitinfo);
+      });
   } else {
-      textResponse = makeLoanRequest();
+      makeLoanRequest(data, function(loanrequestinfo){
+        res.json(loanrequestinfo);
+      });
   }
-  //res.json(textResponse);
 }
 
 function registerUser(data, callback){
-  const member = new saveModel({
+  var member = new saveModel({
     fbID: data.fb_id,
     fName: data.fb_first_name,
     lName: data.fb_last_name,
@@ -68,19 +74,32 @@ function registerUser(data, callback){
     .catch(e => console.log(e));
 }
 
-function makeDeposit(req, res, next){
+function makeDeposit(data, callback){
 
 }
 
-function checkBalance(req, res, next){
+function checkBalance(data, callback){
+  var fbID = data.fb_id;
+  saveModel.find({fbID: uID}, function(err, member) {
+    if (err) {
+      console.log('Could Not Find Any Records.');
+    } else {
+        var messageData = {
+            "messages": [
+              {"text": "Your account balance is  "+member.accountBalance}
+            ]
+          };
+          console.log(messageData)
+          callback(messageData);
+    }
+  });
+}
+
+function loanCheckAmout(data, callback){
 
 }
 
-function loanCheckAmout(req, res, next){
-
-}
-
-function makeLoanRequest(req, res, next){
+function makeLoanRequest(data, callback){
   var messageData = {
     "messages": [
       {"text": "Welcome to our store!"}
