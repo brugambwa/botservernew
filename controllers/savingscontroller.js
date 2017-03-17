@@ -143,10 +143,10 @@ function makeDeposit(data, callback){
             {"text": "No account record found. Click Join to start saving!"}
           ]
         };
+        callback(messageData);
       } else {
-        console.log(member);
         //Process Deposit.
-        var newbalance = member.accountBalance + data.deposit_amount;
+        var newbalance = (member.accountBalance - 0) + (data.deposit_amount - 0);
         var transaction = new transModel({
           fbID: data.fb_id,
           telephone: data.user_number,
@@ -155,22 +155,27 @@ function makeDeposit(data, callback){
           accountPreBal: member.accountBalance,
           accountPostBal: newbalance
         });
-        console.log("------------------");
         transaction.save()
         .then(function(transaction){
-          console.log(transaction);
-            var messageData = {
+          //Update the account balance in the user table.
+          saveModel.update({fbID: uID}, {
+            accountBalance: newbalance
+          }, function(err, member){
+            if (err) {
+              console.log('Could Not Find Any Records.');
+            } else {
+              var messageData = {
                 "messages": [
-                  {"text": "Your transaction was successfully completed."}
+                  {"text": "Your transaction has been completed. Your transaction ID is "+transaction.id+". and your account balance is "+newbalance}
                 ]
               };
+              callback(messageData);
+            }   
+          })
         })
         .catch(e => console.log(e));
       }
     }
-    console.log('Execution Completed');
-    console.log(messageData);
-    callback(messageData);
   });
 }
 
