@@ -181,6 +181,7 @@ function makeDeposit(data, callback){
 
 
 function makeLoanRequest(data, callback){
+  console.log(data);
   var messageData = {
     "messages": [
       {"text": "Welcome to our store!"}
