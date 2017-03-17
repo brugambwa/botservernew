@@ -1,3 +1,4 @@
+var request = require('request');
 var saveModel = require('../models/savings');
 var transModel = require('../models/transactions');
 
@@ -181,13 +182,93 @@ function makeDeposit(data, callback){
 
 
 function makeLoanRequest(data, callback){
-  console.log(data);
+  var uID = data.fb_id;
+  saveModel.findOne({fbID: uID}, function(err, member) {
+    if (err) {
+      console.log('Could Not Find Any Records.');
+    } else {
+      if(!member){
+        var messageData = {
+          "messages": [
+            {"text": "No account record found. Click Join to start saving!"}
+          ]
+        };
+        callback(messageData);
+      } else {
+        //if loan amount matches the limit, Make transaction
+        if(data.loan_amount<=member.loanLimit){
+          //Make the transaction and update the loan balance.
+          //Process Deposit.
+          var newbalance = (member.loanBalance - 0) + (data.loan_amount - 0);
+          var transaction = new transModel({
+            fbID: data.fb_id,
+            telephone: data.user_number,
+            amount: data.loan_amount,
+            transactionType: 'loan',
+            accountPreBal: member.loanBalance,
+            accountPostBal: newbalance
+          });
+          transaction.save()
+          .then(function(transaction){
+            //Update the account balance in the user table.
+            saveModel.update({fbID: uID}, {
+              accountBalance: newbalance
+            }, function(err, member){
+              if (err) {
+                console.log('Could Not Find Any Records.');
+              } else {
+                var messageData = {
+                  "messages": [
+                    {"text": "Your transaction has been completed. Your transaction ID is "+transaction.id+". and your account balance is "+newbalance}
+                  ]
+                };
+                callback(messageData);
+              }   
+            })
+          })
+          .catch(e => console.log(e));
+          
+        } else {
+          //else reject transaction
+          var messageData = {
+            "messages": [
+              {"text": "The loan amount you requested exceeds your InstaLoan limit."}
+            ]
+          };
+        }
+        callback(messageData);
+      }
+    }
+  });
+}
+
+function makeTransactionRequest(data, callback){
   var messageData = {
-    "messages": [
-      {"text": "Welcome to our store!"}
-    ]
-  };
-  return messageData;
+    "request_type":"deposit",
+    "telephone_number":"250784525759",
+    "transaction_ref":"238909123",
+    "transaction_amount": data.amount
+  }
+  var respmessageData;
+  request({
+    uri: 'http://localhost:8888/cresint/payrequest',
+    method: 'POST',
+    json: messageData
+
+  },function (error, body) 
+    {
+        if (error) 
+        {
+            respmessageData = {
+            "messages": [
+              {"text": "Could not complete request at this time. Please try again later."}
+            ]
+          };
+        } else {
+            respmessageData = body;
+        }
+    });
+    callback(respmessageData);  
 }
 
 module.exports = {verifyWebHook, processRequest};
