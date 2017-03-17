@@ -61,7 +61,7 @@ function loanLimitAmoutCheck(data, callback){
     } else {
       var messageData = {
           "messages": [
-            {"text": "You are currently allowed up to "+member.loanLimit+" on InstaLoan."}
+            {"text": "You are currently allowed up to "+member.loanLimit+" on InstaLoan at an interest rate of 5%."}
           ]
         };
         console.log(messageData);
