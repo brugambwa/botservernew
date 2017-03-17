@@ -212,16 +212,17 @@ function makeLoanRequest(data, callback){
           .then(function(transaction){
             //Update the account balance in the user table.
             saveModel.update({fbID: uID}, {
-              accountBalance: newbalance
+              loanBalance: newbalance
             }, function(err, member){
               if (err) {
                 console.log('Could Not Find Any Records.');
               } else {
                 var messageData = {
                   "messages": [
-                    {"text": "Your transaction has been completed. Your transaction ID is "+transaction.id+". and your account balance is "+newbalance}
+                    {"text": "Your transaction has been completed. Your transaction ID is "+transaction.id+". and your loan account balance is "+newbalance}
                   ]
                 };
+                console.log(messageData);
                 callback(messageData);
               }   
             })
@@ -235,8 +236,8 @@ function makeLoanRequest(data, callback){
               {"text": "The loan amount you requested exceeds your InstaLoan limit."}
             ]
           };
+          callback(messageData);
         }
-        callback(messageData);
       }
     }
   });
