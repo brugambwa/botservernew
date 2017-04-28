@@ -159,8 +159,11 @@ function makeDeposit(data, callback){
         transaction.save()
         .then(function(transaction){
           //Update the account balance in the user table.
+          var loanlimit = (newbalance - 0) * (0.1 - 0);
           saveModel.update({fbID: uID}, {
-            accountBalance: newbalance
+            accountBalance: newbalance,
+            loanLimit: loanlimit
+
           }, function(err, member){
             if (err) {
               console.log('Could Not Find Any Records.');
