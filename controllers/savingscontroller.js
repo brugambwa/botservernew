@@ -203,6 +203,7 @@ function makeLoanRequest(data, callback){
           //Make the transaction and update the loan balance.
           //Process Deposit.
           var newbalance = (member.loanBalance - 0) + (data.loan_amount - 0);
+          newbalance = (newbalance-0) + ((newbalance-0)*(0.05-0));
           var transaction = new transModel({
             fbID: data.fb_id,
             telephone: data.user_number,
