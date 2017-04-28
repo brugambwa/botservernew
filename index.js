@@ -1,3 +1,9 @@
+/*
+* FB Messenger Bot Challenge.
+* InvestiSave Bot. (Weka)
+* Tool for Financial Inclusion
+* @brugambwa(git) @bobnsky(twitter)
+*/
 var express = require('express');
 var bodyParse = require('body-parser');
 var port = Number(process.env.PORT || 7478);
